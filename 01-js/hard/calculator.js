@@ -21,47 +21,56 @@ class Calculator {
   constructor() {
     this.result = 0.0;
   }
-  add(operand){
+  add(operand) {
     this.result = this.result + operand;
   }
 
-  subtract(operand){
+  subtract(operand) {
     this.result = this.result - operand;
   }
 
-  multiply(operand){
+  multiply(operand) {
     this.result = this.result * operand;
   }
 
-  divide(operand){
-    if (operand == 0){
+  divide(operand) {
+    if (operand == 0) {
       throw new Error('Denominator for division is zero');
     }
     this.result = this.result / operand;
   }
 
-  clear(){
+  clear() {
     this.result = 0.0;
   }
 
-  getResult(){
+  getResult() {
     return this.result;
   }
 
-  calculate(input){
+  calculate(input) {
     let arithmeticExpression = validateAndFormatArithmeticExpression(input);
-    this.result = eval(arithmeticExpression);
+    try {
+      let res = eval(arithmeticExpression);
+      if (isFinite(res))
+        this.result = res;
+      else
+        throw new Error('Division by zero');
+    }
+    catch (err) {
+      throw new Error(err);
+    }
   }
 
 }
 
-function validateAndFormatArithmeticExpression(arithmeticExpression){
+function validateAndFormatArithmeticExpression(arithmeticExpression) {
   arithmeticExpression = arithmeticExpression.replace(/\s/g, '');
   const regex = /[^0-9+\-\/\*\(\)\.]/;
-  if (!regex.test(arithmeticExpression)){
+  if (!regex.test(arithmeticExpression)) {
     return arithmeticExpression;
   }
-  else{
+  else {
     throw new Error('Input has characters which are not handled');
   }
 }
