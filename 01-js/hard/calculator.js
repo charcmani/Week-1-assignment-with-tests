@@ -17,6 +17,53 @@
   - `npm run test-calculator`
 */
 
-class Calculator {}
+class Calculator {
+  constructor() {
+    this.result = 0.0;
+  }
+  add(operand){
+    this.result = this.result + operand;
+  }
+
+  subtract(operand){
+    this.result = this.result - operand;
+  }
+
+  multiply(operand){
+    this.result = this.result * operand;
+  }
+
+  divide(operand){
+    if (operand == 0){
+      throw new Error('Denominator for division is zero');
+    }
+    this.result = this.result / operand;
+  }
+
+  clear(){
+    this.result = 0.0;
+  }
+
+  getResult(){
+    return this.result;
+  }
+
+  calculate(input){
+    let arithmeticExpression = validateAndFormatArithmeticExpression(input);
+    this.result = eval(arithmeticExpression);
+  }
+
+}
+
+function validateAndFormatArithmeticExpression(arithmeticExpression){
+  arithmeticExpression = arithmeticExpression.replace(/\s/g, '');
+  const regex = /[^0-9+\-\/\*\(\)\.]/;
+  if (!regex.test(arithmeticExpression)){
+    return arithmeticExpression;
+  }
+  else{
+    throw new Error('Input has characters which are not handled');
+  }
+}
 
 module.exports = Calculator;
